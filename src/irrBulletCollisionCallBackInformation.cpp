@@ -18,7 +18,7 @@ ICollisionCallbackInformation::ICollisionCallbackInformation(btPersistentManifol
 ICollisionObject* const ICollisionCallbackInformation::getBody0() const
 {
     SCollisionObjectIdentification* identification =
-		static_cast<SCollisionObjectIdentification*>((contactManifold->getBody1())->getUserPointer());
+		static_cast<SCollisionObjectIdentification*>((contactManifold->getBody0())->getUserPointer());
 
     return identification->getCollisionObject();
 

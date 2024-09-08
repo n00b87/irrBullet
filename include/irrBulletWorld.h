@@ -9,6 +9,7 @@
 #include "irrBulletCommon.h"
 #include "irrBulletRigidBody.h"
 #include "irrBulletSoftBody.h"
+#include "irrBulletGhostObject.h"
 #include "irrBulletPhysicsDebug.h"
 #include <BulletSoftBody/btSoftRigidDynamicsWorld.h>
 #include "irrBulletCollisionCallBackInformation.h"
@@ -99,6 +100,21 @@ public:
 	ILiquidBody* addLiquidBody(const irr::core::vector3df& pos, const irr::core::aabbox3df& aabb,
 		irr::f32 waveFrequency = 40000.0f, irr::f32 density = 0.4f);
 
+
+	/*!
+		Adds a new ghost object to the world.
+		@param shape The collision shape for the object to use.
+		@return The newly created ghost object
+		*/
+	IGhostObject* addGhostObject(ICollisionShape* const shape);
+
+	void setInternalTickCallback(btInternalTickCallback cb, void* worldUserInfo = 0, bool isPreTick = false)
+	{
+		getPointer()->setInternalTickCallback(cb, worldUserInfo, isPreTick);
+	}
+
+
+	IRigidBody* addRigidBody(IRigidBody* b);
 
 	/*!
 		Adds a new rigid body to the world.

@@ -56,13 +56,18 @@ struct SCollisionObjectIdentification
 
     void setName(const irr::core::stringc& newName) { name = newName; };
 
+    void setId(const irr::u32 nid) { id = nid; };
+
     const irr::core::stringc& getName() const { return name; };
+
+    const irr::u32 getId() const { return id; };
 
     ICollisionObject* getCollisionObject() const { return object; };
 
 private:
     ICollisionObject* object;
     irr::core::stringc name;
+    irr::u32 id;
 };
 
 class irrBulletWorld;

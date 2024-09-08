@@ -24,7 +24,7 @@ IKinematicCharacterController::IKinematicCharacterController(irrBulletWorld* con
 	GhostObject->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);
 
 	Character = new btKinematicCharacterController(GhostObject, Capsule, btScalar(stepHeight));
-	
+
 	World->getPointer()->addCollisionObject(GhostObject, btBroadphaseProxy::CharacterFilter, btBroadphaseProxy::StaticFilter | btBroadphaseProxy::DefaultFilter);
 
 	World->getPointer()->addAction(Character);

@@ -46,6 +46,9 @@ void ICollisionObject::setWorldTransform(const irr::core::matrix4& irrmat)
 	if (getObjectType() == ECollisionObjectType::ECOT_RIGID_BODY)
         getPointer()->setWorldTransform(internalTransform);
 
+	else if (getObjectType() == ECollisionObjectType::ECOT_GHOST_OBJECT)
+        getPointer()->setWorldTransform(internalTransform);
+
 	else if (getObjectType() == ECollisionObjectType::ECOT_SOFT_BODY)
         static_cast<btSoftBody*>(getPointer())->transform(internalTransform);
 }

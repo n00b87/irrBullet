@@ -511,8 +511,8 @@ IRigidBody::~IRigidBody()
     if(motionState)
         delete motionState;
 
-    if(IncludeNodeOnRemoval && shape)
-        shape->removeNode();
+    //if(IncludeNodeOnRemoval && shape)
+        //shape->removeNode();
 
     if(shape)
         delete shape;

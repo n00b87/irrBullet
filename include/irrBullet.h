@@ -39,6 +39,7 @@
 #include "irrBulletWorld.h"
 #include "irrBulletBoxShape.h"
 #include "irrBulletSphereShape.h"
+#include "irrBulletConeShape.h"
 #include "irrBulletCylinderShape.h"
 #include "irrBulletCapsuleShape.h"
 #include "irrBulletGImpactMeshShape.h"

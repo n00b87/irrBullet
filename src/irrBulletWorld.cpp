@@ -213,9 +213,31 @@ void irrBulletWorld::registerGImpactAlgorithm()
 }
 
 
+IGhostObject* irrBulletWorld::addGhostObject(ICollisionShape* shape)
+{
+	auto b = new IGhostObject(this, shape);
+    collisionObjects.push_back(b);
+    getPointer()->addCollisionObject(b->getPointer());
+
+    CollisionObjectCount++;
+
+    return b;
+}
+
 IRigidBody* irrBulletWorld::addRigidBody(ICollisionShape* shape)
 {
     auto b = new IRigidBody(this, shape);
+    collisionObjects.push_back(b);
+    getPointer()->addRigidBody(b->getPointer());
+
+    CollisionObjectCount++;
+
+    return b;
+}
+
+
+IRigidBody* irrBulletWorld::addRigidBody(IRigidBody* b)
+{
     collisionObjects.push_back(b);
     getPointer()->addRigidBody(b->getPointer());
 
@@ -310,7 +332,13 @@ void irrBulletWorld::removeCollisionObject(ICollisionObject* const obj, bool del
                         removeRaycastVehicle(static_cast<IRigidBody*>(obj)->getVehicleReference());
                     getPointer()->removeRigidBody(static_cast<IRigidBody*>(obj)->getPointer());
                 }
-
+                else if ((*cbit)->getObjectType() == ECollisionObjectType::ECOT_GHOST_OBJECT)
+                {
+                    #ifdef IRRBULLET_DEBUG_MODE
+                        printf("irrBullet: Removing ghost object (%i)\n", obj->getUniqueID());
+                    #endif
+                    getPointer()->removeCollisionObject(static_cast<IGhostObject*>(obj)->getPointer());
+                }
                 else
 				if ((*cbit)->getObjectType() == ECollisionObjectType::ECOT_SOFT_BODY)
                 {
@@ -327,7 +355,11 @@ void irrBulletWorld::removeCollisionObject(ICollisionObject* const obj, bool del
                         delete static_cast<IRigidBody*>(*cbit);
                         (*cbit) = 0;
                     }
-
+                    else if((*cbit)->getObjectType() == ECollisionObjectType::ECOT_GHOST_OBJECT)
+					{
+                        delete static_cast<IGhostObject*>(*cbit);
+                        (*cbit) = 0;
+					}
                     else
                     {
                         delete static_cast<ISoftBody*>(*cbit);
