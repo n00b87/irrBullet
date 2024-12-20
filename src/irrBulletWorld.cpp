@@ -82,7 +82,7 @@ irrBulletWorld::irrBulletWorld(irr::IrrlichtDevice* const Device, bool useGImpac
 		rect<s32>(10, 10, 120, 240), false);
 	TextPropertiesPosition = EDPT_POSITION::EDPT_TOP_LEFT;
 
-    printf("irrBullet %i.%i.%i\n", IRRBULLET_VER_MAJOR, IRRBULLET_VER_MINOR, IRRBULLET_VER_MICRO);
+    //printf("irrBullet %i.%i.%i\n", IRRBULLET_VER_MAJOR, IRRBULLET_VER_MINOR, IRRBULLET_VER_MICRO);
 }
 
 irrBulletWorld::irrBulletWorld(std::shared_ptr<irr::IrrlichtDevice> Device, bool useGImpact, bool useDebugDrawer)
