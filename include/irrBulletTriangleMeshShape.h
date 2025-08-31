@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <ITerrainSceneNode.h>
 #include "irrBulletCollisionShape.h"
 #include <BulletCollision/CollisionShapes/btTriangleMesh.h>
 #include "irrBulletCommon.h"
@@ -35,6 +36,9 @@ class ITriangleMeshShape : public ICollisionShape
 
         /// @return The btTriangleMesh created by extracting the geometry from an Irrlicht IMesh.
         btTriangleMesh *createTriangleMesh(irr::scene::IMesh* const mesh);
+
+        /// Because Irrlicht's Terrain Scene Node is a bitch
+        btTriangleMesh *createTriangleMesh(irr::scene::ITerrainSceneNode* terrain_node);
 
         btTriangleMesh* CollisionMesh;
 };

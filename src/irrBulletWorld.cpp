@@ -143,7 +143,7 @@ irrBulletWorld::irrBulletWorld(std::shared_ptr<irr::IrrlichtDevice> Device, bool
 		rect<s32>(10, 10, 120, 240), false);
 	TextPropertiesPosition = EDPT_POSITION::EDPT_TOP_LEFT;
 
-	printf("irrBullet %i.%i.%i\n", IRRBULLET_VER_MAJOR, IRRBULLET_VER_MINOR, IRRBULLET_VER_MICRO);
+	//printf("irrBullet %i.%i.%i\n", IRRBULLET_VER_MAJOR, IRRBULLET_VER_MINOR, IRRBULLET_VER_MICRO);
 }
 
 u32 irrBulletWorld::stepSimulation(f32 timeStep, u32 maxSubSteps, f32 fixedTimeStep)
@@ -226,7 +226,7 @@ IGhostObject* irrBulletWorld::addGhostObject(ICollisionShape* shape)
 
 IRigidBody* irrBulletWorld::addRigidBody(ICollisionShape* shape)
 {
-    auto b = new IRigidBody(this, shape);
+	auto b = new IRigidBody(this, shape);
     collisionObjects.push_back(b);
     getPointer()->addRigidBody(b->getPointer());
 
@@ -238,6 +238,7 @@ IRigidBody* irrBulletWorld::addRigidBody(ICollisionShape* shape)
 
 IRigidBody* irrBulletWorld::addRigidBody(IRigidBody* b)
 {
+	//printf("AddRigidBody DBG: %i\n", (int)collisionObjects.size());
     collisionObjects.push_back(b);
     getPointer()->addRigidBody(b->getPointer());
 
@@ -249,6 +250,7 @@ IRigidBody* irrBulletWorld::addRigidBody(IRigidBody* b)
 
 IRigidBody* irrBulletWorld::addRigidBody(ICollisionShape *shape, s32 group, s32 mask)
 {
+	//printf("Add from shape\n");
     auto b = new IRigidBody(this, shape);
     collisionObjects.push_back(b);
     getPointer()->addRigidBody(b->getPointer(), group, mask);
@@ -699,7 +701,7 @@ bool irrBulletWorld::isGImpactEnabled() const
 
 irrBulletWorld::~irrBulletWorld()
 {
-    printf("-- irrBullet: Freeing memory --\n");
+    //printf("-- irrBullet: Freeing memory --\n");
 
     // remove constraints
     /*for (u32 i = 0; i < world->getNumConstraints(); i++)
@@ -773,5 +775,5 @@ irrBulletWorld::~irrBulletWorld()
     delete pairCache;
     delete dispatcher;
     delete collisionConfiguration;
-    printf("-- irrBullet: Finished freeing memory --\n");
+    //printf("-- irrBullet: Finished freeing memory --\n");
 }

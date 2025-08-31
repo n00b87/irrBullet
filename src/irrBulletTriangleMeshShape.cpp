@@ -4,11 +4,14 @@
 // For conditions of distribution and use, see copyright notice in irrBullet.h
 // The above copyright notice and its accompanying information must remain here.
 
+#include <ITerrainSceneNode.h>
 #include <IMesh.h>
 #include <IMeshBuffer.h>
+#include <CDynamicMeshBuffer.h>
 #include "btBulletDynamicsCommon.h"
 #include "btBulletCollisionCommon.h"
 #include "irrBulletTriangleMeshShape.h"
+#include <iostream>
 
 using namespace irr;
 using namespace core;
@@ -18,7 +21,7 @@ ITriangleMeshShape::ITriangleMeshShape() : CollisionMesh(0)
 {
 }
 
-btTriangleMesh *ITriangleMeshShape::createTriangleMesh(IMesh* const mesh)
+btTriangleMesh *ITriangleMeshShape::createTriangleMesh(irr::scene::IMesh* const mesh)
 {
     btVector3 vertices[3];
 	u32 i, j, k;
@@ -28,9 +31,13 @@ btTriangleMesh *ITriangleMeshShape::createTriangleMesh(IMesh* const mesh)
 
 	auto pTriMesh = new btTriangleMesh();
 
+	//std::cout << "MB COUNT = " << mesh->getMeshBufferCount() << std::endl;
+
 	for(i = 0; i < mesh->getMeshBufferCount(); i++)
 	{
 		auto mb = mesh->getMeshBuffer(i);
+
+		//std::cout << "mb_type = " << mesh->getMeshBuffer(i)->getVertexType() << std::endl;
 
         //////////////////////////////////////////////////////////////////////////
 		// Extract vertex data                                                  //
@@ -63,8 +70,10 @@ btTriangleMesh *ITriangleMeshShape::createTriangleMesh(IMesh* const mesh)
 			auto mb_vertices=(irr::video::S3DVertex2TCoords*)mb->getVertices();
 			u16* mb_indices = mb->getIndices();
 			s32 numVertices = mb->getVertexCount();
+
+			//std::cout << "v_count = " << numVertices << ", " << mb->getIndexCount() << std::endl;
 			for(j = 0; j < mb->getIndexCount(); j+=3)
-			{   
+			{
 				//index into irrlicht data
 				for (k = 0; k < 3; k++)
 				{
@@ -78,6 +87,80 @@ btTriangleMesh *ITriangleMeshShape::createTriangleMesh(IMesh* const mesh)
 
 		// Does not handle the EVT_TANGENTS type
 	}
+
+	return pTriMesh;
+}
+
+btTriangleMesh *ITriangleMeshShape::createTriangleMesh(irr::scene::ITerrainSceneNode* terrain_node)
+{
+    btVector3 vertices[3];
+	u32 i, j, k;
+	s32 index, numVertices;
+	u16* mb_indices;
+	const vector3df &scale = node->getScale();
+
+	/* If you need access to the terrain data you can also do this directly via the following code fragment.
+    */
+	irr::scene::CDynamicMeshBuffer* buffer = new scene::CDynamicMeshBuffer(video::EVT_2TCOORDS, video::EIT_16BIT);
+    terrain_node->getMeshBufferForLOD(*buffer, 0);
+    video::S3DVertex2TCoords* data = (video::S3DVertex2TCoords*)buffer->getVertexBuffer().getData();
+
+	auto pTriMesh = new btTriangleMesh();
+
+
+	std::cout << "mb_type = " << buffer->getVertexType() << std::endl;
+
+    //////////////////////////////////////////////////////////////////////////
+    // Extract vertex data                                                  //
+    // Because the vertices are stored as structs with no common base class,//
+    // We need to handle each type separately                               //
+    //////////////////////////////////////////////////////////////////////////
+    if(buffer->getVertexType() == irr::video::EVT_STANDARD)
+    {
+        auto mb_vertices = (irr::video::S3DVertex*)buffer->getVertices();
+        mb_indices = buffer->getIndices();
+        numVertices = buffer->getVertexCount();
+        for(j = 0; j < buffer->getIndexCount(); j+=3)
+        { //get index into vertex list
+            for (k = 0; k < 3; k++)
+            {
+                //three verts per triangle
+                index = mb_indices[j+k];
+                if (index > numVertices) continue;
+                //convert to btVector3
+                vertices[k] = irrlichtToBulletVector(mb_vertices[index].Pos * scale); // 1100
+            }
+            pTriMesh->addTriangle(vertices[0], vertices[1], vertices[2]);
+        }
+
+    }
+    else
+    if(buffer->getVertexType()==irr::video::EVT_2TCOORDS)
+    {
+        // Same but for S3DVertex2TCoords data
+        auto mb_vertices=(irr::video::S3DVertex2TCoords*)buffer->getVertices();
+        u16* mb_indices = buffer->getIndices();
+        s32 numVertices = buffer->getVertexCount();
+
+        std::cout << "v_count = " << buffer->getIndexCount() << std::endl;
+
+        for(j = 0; j < buffer->getIndexCount(); j+=3)
+        {
+            //index into irrlicht data
+            for (k = 0; k < 3; k++)
+            {
+                s32 index = mb_indices[j+k];
+                if (index > numVertices) continue;
+                vertices[k] = irrlichtToBulletVector(mb_vertices[index].Pos * scale);
+            }
+            pTriMesh->addTriangle(vertices[0], vertices[1], vertices[2]);
+        }
+    }
+
+    buffer->drop(); // When done drop the buffer again.
+
+    // Does not handle the EVT_TANGENTS type
+
 
 	return pTriMesh;
 }

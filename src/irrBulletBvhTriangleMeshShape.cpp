@@ -7,6 +7,7 @@
 #include <btBulletDynamicsCommon.h>
 #include <btBulletCollisionCommon.h>
 #include "irrBulletBvhTriangleMeshShape.h"
+#include <iostream>
 
 using namespace irr;
 using namespace core;
@@ -25,7 +26,17 @@ IBvhTriangleMeshShape::IBvhTriangleMeshShape(ISceneNode *n, IMesh *collMesh, f32
 
 void IBvhTriangleMeshShape::createShape(IMesh *mesh)
 {
-    CollisionMesh = createTriangleMesh(mesh);
+    if(node->getType() == irr::scene::ESNT_TERRAIN)
+    {
+        CollisionMesh = createTriangleMesh((irr::scene::ITerrainSceneNode*) node);
+    }
+    else
+    {
+        CollisionMesh = createTriangleMesh(mesh);
+    }
+
+    std::cout << "TRIS: " << CollisionMesh->getNumTriangles() << std::endl;
+
     shape =  new btBvhTriangleMeshShape(CollisionMesh, false, true);
 
     calculateLocalInertia(getMass(), vector3df(0.0f,0.0f,0.0f));
