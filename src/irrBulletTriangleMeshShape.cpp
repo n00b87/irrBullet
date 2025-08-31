@@ -108,7 +108,7 @@ btTriangleMesh *ITriangleMeshShape::createTriangleMesh(irr::scene::ITerrainScene
 	auto pTriMesh = new btTriangleMesh();
 
 
-	std::cout << "mb_type = " << buffer->getVertexType() << std::endl;
+	//std::cout << "mb_type = " << buffer->getVertexType() << std::endl;
 
     //////////////////////////////////////////////////////////////////////////
     // Extract vertex data                                                  //
@@ -142,7 +142,7 @@ btTriangleMesh *ITriangleMeshShape::createTriangleMesh(irr::scene::ITerrainScene
         u16* mb_indices = buffer->getIndices();
         s32 numVertices = buffer->getVertexCount();
 
-        std::cout << "v_count = " << buffer->getIndexCount() << std::endl;
+        //std::cout << "v_count = " << buffer->getIndexCount() << std::endl;
 
         for(j = 0; j < buffer->getIndexCount(); j+=3)
         {

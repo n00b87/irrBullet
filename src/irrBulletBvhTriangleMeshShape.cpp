@@ -35,7 +35,7 @@ void IBvhTriangleMeshShape::createShape(IMesh *mesh)
         CollisionMesh = createTriangleMesh(mesh);
     }
 
-    std::cout << "TRIS: " << CollisionMesh->getNumTriangles() << std::endl;
+    //std::cout << "TRIS: " << CollisionMesh->getNumTriangles() << std::endl;
 
     shape =  new btBvhTriangleMeshShape(CollisionMesh, false, true);
 
