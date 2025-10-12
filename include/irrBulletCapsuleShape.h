@@ -11,7 +11,7 @@
 class ICapsuleShape : public ICollisionShape
 {
 public:
-	ICapsuleShape(irr::scene::ISceneNode* const n, irr::f32 m, bool overrideMargin = false);
+	ICapsuleShape(irr::scene::ISceneNode* const n, irr::f32 m, bool overrideMargin = false, irr::f32 radius = -1.0);
 
 	ICapsuleShape(const ICapsuleShape& other) = default;
 
@@ -42,5 +42,5 @@ public:
 	virtual ~ICapsuleShape();
 
 protected:
-	void createShape(bool overrideMargin);
+	void createShape(bool overrideMargin, irr::f32 override_radius);
 };

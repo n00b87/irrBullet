@@ -12,7 +12,7 @@
 class ISphereShape : public ICollisionShape
 {
 public:
-    ISphereShape(irr::scene::ISceneNode *n, irr::f32 m, bool overrideMargin = false);
+    ISphereShape(irr::scene::ISceneNode *n, irr::f32 m, bool overrideMargin = false, irr::f32 radius = -1.0);
 
 	ISphereShape(const ISphereShape& other) = default;
 
@@ -47,7 +47,7 @@ public:
     irr::f32 getRadius() { return static_cast<btSphereShape*>(shape)->getRadius(); };
 
 protected:
-    void createShape(bool overrideMargin);
+    void createShape(bool overrideMargin, irr::f32 override_radius = -1.0);
 };
 
 

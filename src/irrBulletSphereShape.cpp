@@ -12,17 +12,17 @@ using namespace irr;
 using namespace core;
 using namespace scene;
 
-ISphereShape::ISphereShape(ISceneNode *n, f32 m, bool overrideMargin)
+ISphereShape::ISphereShape(ISceneNode *n, f32 m, bool overrideMargin, f32 radius)
 {
     node = n;
     mass = m;
 
 	type = ECollisionShapeType::ECST_SPHERE;
 
-    createShape(overrideMargin);
+    createShape(overrideMargin, radius);
 }
 
-void ISphereShape::createShape(bool overrideMargin)
+void ISphereShape::createShape(bool overrideMargin, f32 override_radius)
 {
     node->updateAbsolutePosition();
     /*const aabbox3df& box = node->getTransformedBoundingBox();
@@ -30,7 +30,12 @@ void ISphereShape::createShape(bool overrideMargin)
     const f32 radius = diag.getLength() * 0.53;*/
     const aabbox3df& box = node->getTransformedBoundingBox();
     const vector3df& diag = (box.MaxEdge - box.getCenter()) + f32((overrideMargin) ? 0.04:0.0);
-    const f32 radius = f32(diag.getLength() * 0.5f);
+    f32 radius = f32(diag.getLength() * 0.5f);
+
+    if(override_radius > 0)
+    {
+        radius = override_radius;
+    }
 
 
 	shape = new btSphereShape(radius);

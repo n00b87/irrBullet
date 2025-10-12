@@ -13,22 +13,27 @@ using namespace irr;
 using namespace core;
 using namespace scene;
 
-ICapsuleShape::ICapsuleShape(ISceneNode* const n, f32 m, bool overrideMargin)
+ICapsuleShape::ICapsuleShape(ISceneNode* const n, f32 m, bool overrideMargin, f32 radius)
 {
 	node = n;
 	mass = m;
 
 	type = ECollisionShapeType::ECST_CAPSULE;
 
-	createShape(overrideMargin);
+	createShape(overrideMargin, radius);
 }
 
-void ICapsuleShape::createShape(bool overrideMargin)
+void ICapsuleShape::createShape(bool overrideMargin, f32 override_radius)
 {
 	node->updateAbsolutePosition();
 	const aabbox3df& box = node->getTransformedBoundingBox();
 	const vector3df& diag = (box.MaxEdge - box.getCenter()) + f32((overrideMargin) ? 0.04 : 0.0);
-	const f32 radius = f32(diag.getLength() * 0.5f);
+	f32 radius = f32(diag.getLength() * 0.5f);
+
+	if(override_radius > 0)
+    {
+        radius = override_radius;
+    }
 
 	const f32 scale = node->getParent()->getScale().Y;
 	const f32 height = box.getExtent().Y * 0.5f * scale;
