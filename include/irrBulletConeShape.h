@@ -11,7 +11,7 @@
 class IConeShape : public ICollisionShape
 {
 public:
-	IConeShape(irr::scene::ISceneNode* const n, irr::f32 m, bool overrideMargin = false);
+	IConeShape(irr::scene::ISceneNode* const n, irr::f32 m, bool overrideMargin = false, irr::f32 radius = -1.0);
 
 	IConeShape(const IConeShape& other) = default;
 
@@ -42,5 +42,5 @@ public:
 	virtual ~IConeShape();
 
 protected:
-	void createShape(bool overrideMargin);
+	void createShape(bool overrideMargin, irr::f32 override_radius = -1.0);
 };
