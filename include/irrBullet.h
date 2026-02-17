@@ -45,6 +45,7 @@
 #include "irrBulletGImpactMeshShape.h"
 #include "irrBulletBvhTriangleMeshShape.h"
 #include "irrBulletConvexHullShape.h"
+#include "irrBulletCompoundShape.h"
 #include "irrBulletMotionState.h"
 #include "irrBulletRayCastVehicle.h"
 #include "irrBulletCollisionObjectAffector.h"
