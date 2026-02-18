@@ -49,7 +49,7 @@ public:
 	int getNumChildShapes ();
 
 	ICollisionShape* getChildShape (int index);
-    irr::core::matrix4& getChildTransform (int index);
+    irr::core::matrix4 getChildTransform (int index);
 
     void updateChildTransform (int childIndex, irr::core::matrix4 &newChildTransform, bool shouldRecalculateLocalAabb=true);
 

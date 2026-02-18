@@ -109,7 +109,7 @@ ICollisionShape* ICompoundShape::getChildShape (int index)
 }
 
 
-irr::core::matrix4& ICompoundShape::getChildTransform (int index)
+irr::core::matrix4 ICompoundShape::getChildTransform (int index)
 {
     btCompoundShape* shape_ptr = (btCompoundShape*)this->getPointer();
     btTransform p_transform = shape_ptr->getChildTransform(index);
